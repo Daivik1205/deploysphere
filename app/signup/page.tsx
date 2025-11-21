@@ -8,6 +8,7 @@ import { FcGoogle } from "react-icons/fc";
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [githubConnected, setGithubConnected] = useState(false);
 
   const useIsomorphicLayoutEffect =
     typeof window !== "undefined" ? useLayoutEffect : () => {};
@@ -66,12 +67,15 @@ export default function SignupPage() {
           {/* LOGO */}
           <div className="flex items-center justify-center mb-4">
             <img
-              src="/full.svg"
-              alt="DeploySphere"
-              width={260}
+              src="/logo.png"
+              alt="DeployChef Logo"
+              width={80}
               height={80}
-              className="object-contain"
+              className="object-contain -mr-2"
             />
+            <span className="text-4xl font-bold text-[#14A64A]" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+              DeployChef
+            </span>
           </div>
 
           <h2 className="text-3xl font-bold text-[#E4E1DA] mb-5" style={{ fontFamily: "Space Grotesk" }}>
@@ -126,42 +130,37 @@ export default function SignupPage() {
               </button>
             </div>
 
-            {/* SIGNUP BUTTON */}
+            {/* CONNECT GITHUB BUTTON */}
             <button
-              className="w-full py-3 rounded-lg text-black font-semibold"
-              style={{
-                background: "linear-gradient(180deg, #14A64A, #12954A)",
-              }}
+              type="button"
+              onClick={() => setGithubConnected(!githubConnected)}
+              className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all ${
+                githubConnected 
+                  ? 'bg-[#14A64A] text-black' 
+                  : 'bg-white text-black hover:bg-gray-100'
+              }`}
             >
-              Signup
+              <Github className="w-5 h-5" />
+              {githubConnected ? 'GitHub Connected ✓' : 'Connect GitHub'}
             </button>
 
-            {/* OR */}
-            <div className="flex items-center gap-3 py-2">
-              <div className="flex-1 h-px bg-[#E4E1DA]/10" />
-              <span className="text-[#E4E1DA]/50 text-sm">Or</span>
-              <div className="flex-1 h-px bg-[#E4E1DA]/10" />
-            </div>
+            {!githubConnected && (
+              <p className="text-[#E4E1DA]/60 text-xs text-center -mt-2">
+                * GitHub connection is required for signup
+              </p>
+            )}
 
-            {/* SOCIAL ICONS */}
-            <div className="flex justify-center gap-4">
-
-              {/* GOOGLE */}
-              <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
-                <FcGoogle className="w-7 h-7" />
+            {/* SIGNUP BUTTON */}
+            {githubConnected && (
+              <button
+                className="w-full py-3 rounded-lg text-black font-semibold"
+                style={{
+                  background: "linear-gradient(180deg, #14A64A, #12954A)",
+                }}
+              >
+                Signup
               </button>
-
-              {/* FACEBOOK */}
-              <button className="w-12 h-12 bg-[#1877F2] rounded-full flex items-center justify-center shadow-md">
-                <Facebook className="w-6 h-6 text-white" />
-              </button>
-
-              {/* GITHUB */}
-              <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
-                <Github className="w-6 h-6 text-black" />
-              </button>
-
-            </div>
+            )}
 
             {/* LOGIN LINK */}
             <div className="text-center pt-5">

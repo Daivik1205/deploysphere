@@ -10,6 +10,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        {/* Ensure mobile devices render properly */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* Google Fonts: Space Grotesk for headings, Inter for body */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />

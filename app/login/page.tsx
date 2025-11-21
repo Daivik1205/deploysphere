@@ -67,12 +67,15 @@ export default function LoginPage() {
           {/* LOGO */}
           <div className="flex items-center justify-center mb-4">
             <img
-              src="/full.svg"
-              alt="DeploySphere"
-              width={260}
+              src="/logo.png"
+              alt="DeployChef Logo"
+              width={80}
               height={80}
-              className="object-contain"
+              className="object-contain -mr-2"
             />
+            <span className="text-4xl font-bold text-[#14A64A]" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+              DeployChef
+            </span>
           </div>
 
           <h2 className="text-3xl font-bold text-[#E4E1DA] mb-5" style={{ fontFamily: "Space Grotesk" }}>
@@ -140,24 +143,12 @@ export default function LoginPage() {
             {/* OR */}
             <div className="flex items-center gap-3 py-2">
               <div className="flex-1 h-px bg-[#E4E1DA]/10" />
-              <span className="text-[#E4E1DA]/50 text-sm">Or</span>
+              <span className="text-[#E4E1DA]/50 text-sm">Or login with</span>
               <div className="flex-1 h-px bg-[#E4E1DA]/10" />
             </div>
 
-            {/* SOCIAL ICONS */}
-            <div className="flex justify-center gap-4">
-
-              {/* GOOGLE */}
-              <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
-                <FcGoogle className="w-7 h-7" />
-              </button>
-
-              {/* FACEBOOK */}
-              <button className="w-12 h-12 bg-[#1877F2] rounded-full flex items-center justify-center shadow-md">
-                <Facebook className="w-6 h-6 text-white" />
-              </button>
-
-              {/* GITHUB */}
+            {/* GITHUB */}
+            <div className="flex justify-center">
               <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
                 <Github className="w-6 h-6 text-black" />
               </button>

@@ -30,15 +30,15 @@ function statusColor(status: Status) {
 export default function DeploymentCard({ data, onToggle }: { data: Deployment; onToggle: (id: string) => void }) {
   return (
     <article className={`rounded-2xl p-4 bg-gradient-to-b from-[#05210c] to-[#083116] border border-[#164a25] ${statusColor(data.status)} ring-2 ring-opacity-30 shadow-[0_8px_24px_rgba(3,60,23,0.6)]`}>
-      <div className="flex gap-4 items-center">
-        <div className="w-40 h-24 rounded-md overflow-hidden bg-white/5 flex items-center justify-center">
-          <div className="text-xs text-[#E4DCC9] text-center px-2">Preview</div>
+      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+        <div className="w-full sm:w-40 h-36 sm:h-24 rounded-md overflow-hidden bg-white/5 flex items-center justify-center">
+          <div className="text-xs sm:text-xs text-[#E4DCC9] text-center px-2">Preview</div>
         </div>
 
-        <div className="flex-1">
-          <h3 className="text-2xl font-bold" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>{data.name}</h3>
+        <div className="flex-1 min-w-0">
+          <h3 className="text-xl sm:text-2xl font-bold truncate" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>{data.name}</h3>
           <p className="text-sm text-[#cfe7cc] font-medium">Repo: <span className="font-normal">{data.repo}</span></p>
-          <p className="mt-2 text-sm leading-snug text-[#C9E6C9]">{data.desc}</p>
+          <p className="mt-2 text-sm leading-snug text-[#C9E6C9] line-clamp-3">{data.desc}</p>
         </div>
       </div>
 
