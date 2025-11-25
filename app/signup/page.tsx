@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 import { useState, useLayoutEffect } from "react";
-import { Eye, EyeOff, Facebook, Github } from "lucide-react";
-import { FcGoogle } from "react-icons/fc";
+import { Github } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 export default function SignupPage() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [githubConnected, setGithubConnected] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const useIsomorphicLayoutEffect =
     typeof window !== "undefined" ? useLayoutEffect : () => {};
@@ -21,10 +20,27 @@ export default function SignupPage() {
     };
   }, []);
 
+  const handleGitHubSignup = async () => {
+    setLoading(true);
+    setError("");
+    
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      }
+    });
+    
+    if (error) {
+      setError("Failed to sign up with GitHub");
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="h-screen w-screen overflow-hidden relative flex items-center justify-center bg-black">
 
-      {/* BG */}
+      {/* BACKGROUND */}
       <div
         className="absolute inset-0"
         style={{
@@ -52,10 +68,10 @@ export default function SignupPage() {
       />
 
       {/* CARD */}
-      <div className="relative z-10 w-full max-w-[420px] mx-4 scale-[0.82] origin-top translate-y-16">
+      <div className="relative z-10 w-full max-w-[420px] mx-4">
 
         <div
-          className="rounded-2xl p-7"
+          className="rounded-2xl p-8"
           style={{
             background: "linear-gradient(180deg, rgba(0,0,0,0.55), rgba(3,3,3,0.35))",
             border: "1px solid rgba(20,166,74,0.12)",
@@ -65,7 +81,7 @@ export default function SignupPage() {
         >
 
           {/* LOGO */}
-          <div className="flex items-center justify-center mb-4">
+          <div className="flex items-center justify-center mb-6">
             <img
               src="/logo.png"
               alt="DeployChef Logo"
@@ -78,103 +94,41 @@ export default function SignupPage() {
             </span>
           </div>
 
-          <h2 className="text-3xl font-bold text-[#E4E1DA] mb-5" style={{ fontFamily: "Space Grotesk" }}>
-            Signup
+          <h2 className="text-3xl font-bold text-[#E4E1DA] mb-3 text-center" style={{ fontFamily: "Space Grotesk" }}>
+            Sign Up
           </h2>
+          
+          <p className="text-[#E4E1DA]/70 text-center mb-8 text-sm">
+            Create your account with GitHub
+          </p>
 
-          <div className="space-y-4">
-
-            {/* USERNAME */}
-            <input
-              type="text"
-              placeholder="Username"
-              className="w-full px-4 py-3 bg-black/30 border border-[#E4E1DA]/10 rounded-lg text-[#E4E1DA]"
-            />
-
-            {/* EMAIL */}
-            <input
-              type="email"
-              placeholder="Email ID"
-              className="w-full px-4 py-3 bg-black/30 border border-[#E4E1DA]/10 rounded-lg text-[#E4E1DA]"
-            />
-
-            {/* PASSWORD */}
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                className="w-full px-4 py-3 bg-black/30 border border-[#E4E1DA]/10 rounded-lg text-[#E4E1DA]"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#E4E1DA] hover:text-[#14A64A]"
-              >
-                {showPassword ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
-              </button>
+          {error && (
+            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
+              {error}
             </div>
+          )}
 
-            {/* CONFIRM PASSWORD */}
-            <div className="relative">
-              <input
-                type={showConfirm ? "text" : "password"}
-                placeholder="Confirm Password"
-                className="w-full px-4 py-3 bg-black/30 border border-[#E4E1DA]/10 rounded-lg text-[#E4E1DA]"
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirm(!showConfirm)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#E4E1DA] hover:text-[#14A64A]"
-              >
-                {showConfirm ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
-              </button>
-            </div>
+          {/* GITHUB SIGNUP BUTTON */}
+          <button 
+            onClick={handleGitHubSignup}
+            disabled={loading}
+            className="w-full py-4 rounded-lg bg-white text-black font-semibold flex items-center justify-center gap-3 hover:bg-gray-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+          >
+            <Github className="w-6 h-6" />
+            {loading ? "Connecting..." : "Continue with GitHub"}
+          </button>
 
-            {/* CONNECT GITHUB BUTTON */}
-            <button
-              type="button"
-              onClick={() => setGithubConnected(!githubConnected)}
-              className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all ${
-                githubConnected 
-                  ? 'bg-[#14A64A] text-black' 
-                  : 'bg-white text-black hover:bg-gray-100'
-              }`}
-            >
-              <Github className="w-5 h-5" />
-              {githubConnected ? 'GitHub Connected ✓' : 'Connect GitHub'}
-            </button>
-
-            {!githubConnected && (
-              <p className="text-[#E4E1DA]/60 text-xs text-center -mt-2">
-                * GitHub connection is required for signup
-              </p>
-            )}
-
-            {/* SIGNUP BUTTON */}
-            {githubConnected && (
-              <button
-                className="w-full py-3 rounded-lg text-black font-semibold"
-                style={{
-                  background: "linear-gradient(180deg, #14A64A, #12954A)",
-                }}
-              >
-                Signup
-              </button>
-            )}
-
-            {/* LOGIN LINK */}
-            <div className="text-center pt-5">
-              <span className="text-[#E4E1DA]/80">Already Registered?</span>
-              <Link href="/login" className="text-[#14A64A] ml-1 font-semibold">
-                Login
-              </Link>
-            </div>
-
+          {/* LOGIN LINK */}
+          <div className="text-center pt-6">
+            <span className="text-[#E4E1DA]/80">Already have an account?</span>
+            <Link href="/login" className="text-[#14A64A] ml-1 font-semibold">
+              Login
+            </Link>
           </div>
 
         </div>
-
       </div>
+
     </div>
   );
 }

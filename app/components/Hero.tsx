@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import DeploymentDiagram from './DeploymentDiagram';
 
@@ -36,8 +38,11 @@ export default function Hero() {
               </p>
             </div>
 
-            <button className="mt-3 sm:mt-0 px-6 py-2 sm:px-8 sm:py-3 rounded-lg bg-[#14A64A] text-black font-semibold hover:bg-[#0f8a3d] transition-colors text-base sm:text-lg whitespace-nowrap">
-              Get Started
+            <button 
+              onClick={() => window.location.href = '/dashboard'}
+              className="mt-3 sm:mt-0 px-6 py-2 sm:px-8 sm:py-3 rounded-lg bg-[#14A64A] text-black font-semibold hover:bg-[#0f8a3d] transition-colors text-base sm:text-lg whitespace-nowrap"
+            >
+              Dashboard
             </button>
           </div>
         </div>

@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from 'react';
-import Head from 'next/head';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import DeploymentCard, { Deployment } from '../components/DeploymentCard';
+import { supabase } from '@/lib/supabase';
 
 const initialDeployments: Deployment[] = [
   { id: '1', name: 'Market Price', repo: 'market-price', desc: 'Marketing website deployment for QuikCart Application', status: 'ACTIVE', updated: '2 hr Ago' },
@@ -14,6 +14,18 @@ const initialDeployments: Deployment[] = [
 
 export default function DeploymentsPage() {
   const [deployments, setDeployments] = useState<Deployment[]>(initialDeployments);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        window.location.href = '/login';
+      }
+    };
+
+    checkAuth();
+  }, []);
 
   function toggleStatus(id: string) {
     setDeployments((d) =>
@@ -29,17 +41,8 @@ export default function DeploymentsPage() {
   }
 
   return (
-    <>
-      <Head>
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@400;600;800&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
-
-      <div className="min-h-screen bg-black text-[#E4DCC9]" style={{ fontFamily: 'Inter, sans-serif' }}>
-        <Navbar />
+    <div className="min-h-screen bg-black text-[#E4DCC9]" style={{ fontFamily: 'Inter, sans-serif' }}>
+      <Navbar />
 
         <main className="max-w-[1500px] mx-auto px-8 py-12">
           <header className="mb-8">
@@ -80,16 +83,6 @@ export default function DeploymentsPage() {
             Tip: Click <span className="font-semibold">Toggle</span> on any card to cycle its status and test the UI.
           </p>
         </main>
-
-        <style jsx global>{`
-          body {
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-          }
-          h1, h2, h3 {
-            font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-          }
-        `}</style>
       </div>
-    </>
   );
 }

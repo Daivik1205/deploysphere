@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useState, useLayoutEffect } from "react";
-import { Eye, EyeOff, Facebook, Github } from "lucide-react";
-import { FcGoogle } from "react-icons/fc";
+import { Github } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 export default function LoginPage() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const useIsomorphicLayoutEffect =
     typeof window !== "undefined" ? useLayoutEffect : () => {};
@@ -20,6 +20,23 @@ export default function LoginPage() {
       document.body.style.overflow = prev;
     };
   }, []);
+
+  const handleGitHubLogin = async () => {
+    setLoading(true);
+    setError("");
+    
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      }
+    });
+    
+    if (error) {
+      setError("Failed to login with GitHub");
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="h-screen w-screen overflow-hidden relative flex items-center justify-center bg-black">
@@ -52,10 +69,10 @@ export default function LoginPage() {
       />
 
       {/* CARD */}
-      <div className="relative z-10 w-full max-w-[420px] mx-4 scale-[0.82] origin-top translate-y-16">
+      <div className="relative z-10 w-full max-w-[420px] mx-4">
 
         <div
-          className="rounded-2xl p-7"
+          className="rounded-2xl p-8"
           style={{
             background: "linear-gradient(180deg, rgba(0,0,0,0.55), rgba(3,3,3,0.35))",
             border: "1px solid rgba(20,166,74,0.12)",
@@ -65,7 +82,7 @@ export default function LoginPage() {
         >
 
           {/* LOGO */}
-          <div className="flex items-center justify-center mb-4">
+          <div className="flex items-center justify-center mb-6">
             <img
               src="/logo.png"
               alt="DeployChef Logo"
@@ -78,91 +95,38 @@ export default function LoginPage() {
             </span>
           </div>
 
-          <h2 className="text-3xl font-bold text-[#E4E1DA] mb-5" style={{ fontFamily: "Space Grotesk" }}>
+          <h2 className="text-3xl font-bold text-[#E4E1DA] mb-3 text-center" style={{ fontFamily: "Space Grotesk" }}>
             Login
           </h2>
+          
+          <p className="text-[#E4E1DA]/70 text-center mb-8 text-sm">
+            Sign in with GitHub to continue
+          </p>
 
-          <div className="space-y-4">
-
-            {/* USERNAME */}
-            <input
-              type="text"
-              placeholder="Username / Email ID"
-              className="w-full px-4 py-3 bg-black/30 border border-[#E4E1DA]/10 text-[#E4E1DA] rounded-lg"
-            />
-
-            {/* PASSWORD */}
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                className="w-full px-4 py-3 bg-black/30 border border-[#E4E1DA]/10 text-[#E4E1DA] rounded-lg"
-              />
-
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#E4E1DA] hover:text-[#14A64A] transition-colors"
-              >
-                {showPassword ? (
-                  <Eye className="w-5 h-5" />
-                ) : (
-                  <EyeOff className="w-5 h-5" />
-                )}
-              </button>
+          {error && (
+            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
+              {error}
             </div>
+          )}
 
-            {/* REMEMBER ME */}
-            <div className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
-                className="w-4 h-4 accent-[#14A64A]"
-              />
-              <p className="text-[#E4E1DA]/80 text-sm">Remember me</p>
-            </div>
+          {/* GITHUB LOGIN BUTTON */}
+          <button 
+            onClick={handleGitHubLogin}
+            disabled={loading}
+            className="w-full py-4 rounded-lg bg-white text-black font-semibold flex items-center justify-center gap-3 hover:bg-gray-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+          >
+            <Github className="w-6 h-6" />
+            {loading ? "Connecting..." : "Continue with GitHub"}
+          </button>
 
-            {/* LOGIN BUTTON */}
-            <button
-              className="w-full py-3 rounded-lg text-black font-semibold"
-              style={{
-                background: "linear-gradient(180deg, #14A64A, #12954A)",
-              }}
-            >
-              Login
-            </button>
-
-            {/* FORGOT PASSWORD */}
-            <div className="text-center pt-1">
-              <Link href="/forgot" className="text-[#E4E1DA]/70 hover:text-[#14A64A] text-sm">
-                Forgot password?
-              </Link>
-            </div>
-
-            {/* OR */}
-            <div className="flex items-center gap-3 py-2">
-              <div className="flex-1 h-px bg-[#E4E1DA]/10" />
-              <span className="text-[#E4E1DA]/50 text-sm">Or login with</span>
-              <div className="flex-1 h-px bg-[#E4E1DA]/10" />
-            </div>
-
-            {/* GITHUB */}
-            <div className="flex justify-center">
-              <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
-                <Github className="w-6 h-6 text-black" />
-              </button>
-            </div>
-
-            {/* SIGNUP LINK */}
-            <div className="text-center pt-5">
-              <span className="text-[#E4E1DA]/80">Don’t have an account?</span>
-              <Link href="/signup" className="text-[#14A64A] ml-1 font-semibold">
-                Signup
-              </Link>
-            </div>
-
+          {/* SIGNUP LINK */}
+          <div className="text-center pt-6">
+            <span className="text-[#E4E1DA]/80">Don't have an account?</span>
+            <Link href="/signup" className="text-[#14A64A] ml-1 font-semibold">
+              Signup
+            </Link>
           </div>
+
         </div>
       </div>
 
