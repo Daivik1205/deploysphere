@@ -84,15 +84,12 @@ export default function LoginPage() {
           {/* LOGO */}
           <div className="flex items-center justify-center mb-6">
             <img
-              src="/logo.png"
+              src="/full.svg"
               alt="DeployChef Logo"
-              width={80}
-              height={80}
+              width={230}
+              height={230}
               className="object-contain -mr-2"
             />
-            <span className="text-4xl font-bold text-[#14A64A]" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-              DeployChef
-            </span>
           </div>
 
           <h2 className="text-3xl font-bold text-[#E4E1DA] mb-3 text-center" style={{ fontFamily: "Space Grotesk" }}>
