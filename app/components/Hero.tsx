@@ -5,51 +5,50 @@ import DeploymentDiagram from './DeploymentDiagram';
 
 export default function Hero() {
   return (
-    <section className="w-full px-6 sm:px-10 lg:px-20 overflow-hidden relative flex items-center" style={{ height: 'calc(100vh - 73px)' }}>
-      {/* Light green glow from top */}
-      <div className="absolute top-0 left-0 right-0 h-[300px] bg-gradient-to-b from-[#14A64A]/10 via-[#14A64A]/5 to-transparent pointer-events-none" />
+    <section className="relative flex min-h-[calc(100vh-80px)] w-full items-center justify-center overflow-hidden px-6 py-12 lg:px-8">
       
-      {/* Light green glow from bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-[400px] bg-gradient-to-t from-[#14A64A]/20 via-[#14A64A]/10 to-transparent pointer-events-none" />
-      
-      {/* Container: stacks on small screens, row layout on md+ */}
-      <div className="mx-auto w-full max-w-[1500px] flex flex-col-reverse md:flex-row items-center justify-between gap-8 md:gap-12 lg:gap-20 relative z-10">
+      {/* Content Container */}
+      <div className="mx-auto flex w-full max-w-7xl flex-col-reverse items-center justify-between gap-12 lg:flex-row lg:gap-20">
 
-        {/* LEFT: flexible, allow wrapping on small screens */}
-        <div className="w-full md:flex-1 md:max-w-[600px] min-w-0">
-          <h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#14A64A] mb-2 leading-tight break-words"
-            style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-          >
-            Build. Deploy. Scale.
+        {/* LEFT: Text Content */}
+        <div className="flex flex-1 flex-col items-start lg:max-w-xl">
+
+          <h1 className="mt-6 font-['Space_Grotesk'] text-5xl font-extrabold tracking-tight text-white sm:text-6xl lg:text-7xl leading-[1.1]">
+            Build. Deploy. <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#14A64A] to-emerald-200">
+              Scale.
+            </span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-2xl text-[#E4DCC9] mb-6 sm:mb-10 leading-relaxed">
-            DeployChef automates builds, deployments, and scaling from any Git repo — with zero setup.
-            Instant deploys, previews, and CI/CD on AWS.
+          <p className="mt-6 text-lg text-zinc-400 leading-relaxed max-w-lg font-['Inter']">
+            DeployChef automates builds, deployments, and scaling from any Git repo with zero setup. Instant previews and CI/CD on AWS.
           </p>
 
-          {/* CTA block: stacks on very small screens */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-black/10 p-4 rounded-lg w-full sm:w-auto">
-            <div className="flex items-center gap-4 min-w-0">
-              <div className="w-1 h-10 bg-[#14A64A] rounded" />
-              <p className="text-[#14A64A] font-medium text-base sm:text-lg leading-tight whitespace-normal max-w-[350px]">
-                Start deploying instantly with DeployChef
-              </p>
-            </div>
-
+          <div className="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
             <button 
               onClick={() => window.location.href = '/dashboard'}
-              className="mt-3 sm:mt-0 px-6 py-2 sm:px-8 sm:py-3 rounded-lg bg-[#14A64A] text-black font-semibold hover:bg-[#0f8a3d] transition-colors text-base sm:text-lg whitespace-nowrap"
+              className="w-full sm:w-auto rounded-xl bg-[#14A64A] px-8 py-3.5 text-base font-bold text-white shadow-[0_0_20px_rgba(20,166,74,0.3)] transition-all hover:bg-[#14A64A]/90 hover:shadow-[0_0_30px_rgba(20,166,74,0.5)] active:scale-95"
             >
-              Dashboard
+              Go to Dashboard
+            </button>
+            <button className="w-full sm:w-auto rounded-xl border border-zinc-700 bg-zinc-900/50 px-8 py-3.5 text-base font-semibold text-zinc-300 transition-all hover:bg-zinc-800 hover:text-white">
+              View Documentation
             </button>
           </div>
+          
+          <p className="mt-6 text-sm text-zinc-500 font-['Inter']">
+            No credit card required for hobby projects.
+          </p>
         </div>
 
-        {/* RIGHT: diagram - always visible, scales to fit container */}
-        <div className="w-full md:w-auto md:flex-1 md:max-w-[455px] flex items-center justify-center overflow-hidden">
-          <DeploymentDiagram />
+        {/* RIGHT: Diagram */}
+        <div className="relative flex w-full flex-1 items-center justify-center lg:justify-end">
+          {/* Ambient Glow behind diagram */}
+          <div className="absolute left-1/2 top-1/2 -z-10 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 opacity-20 blur-[100px] bg-[#14A64A]" />
+          
+          <div className="relative z-10 w-full max-w-[500px]">
+            <DeploymentDiagram />
+          </div>
         </div>
       </div>
     </section>
